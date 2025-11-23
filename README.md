@@ -27,13 +27,13 @@ EPHE_PATH='/path/to/your/ephe/files'
 ## Usage
 Run the script from your terminal (Linux environment recommended):
 ```bash
-python3 astro_script.py [options]
+python3 fortuna.py [options]
 ```
 
 Command-Line Arguments
 The script uses argparse to handle configuration. Run with --help for a summary of options:
 ```bash
-python3 astro_script.py --help
+python3 fortuna.py --help
 ```
 
 | Argument | Type | Default Value | Description |
@@ -42,23 +42,23 @@ python3 astro_script.py --help
 | --lon | float | -0.1276 | Your longitude (East is positive, West is negative). |
 | --start_date | str | Today's Date | Starting date in YYYY-MM-DD format. |
 | --start_time | str | 00:00 | Starting time in HH:MM format (UTC). |
-| --duration | int | 1 | Duration of the calculation loop in full days. |
+| --duration | int | 1 | Duration of the calculation loop in full days. Due to performance limitations, don't set this to a high number! |
 | --exact | str | N | Y for only exact conjunctions (<1 degree), N for wide orb (<6 degrees). |
 
 ## Examples
 Run with default parameters (1 day duration for current date at London, UK):
 ```bash
-python3 astro_script.py
+python3 fortuna.py
 ```
 
 Run for a specific location and date:
 ```bash
-python3 astro_script.py --lat 40.7128 --lon -74.0060 --start_date 2025-11-25 --duration 2
+python3 fortuna.py --lat 40.7128 --lon -74.0060 --start_date 2025-11-25 --duration 2
 ```
 Run for exact conjunctions only (narrow orb < 1 degree):
 ```bash
 
-python3 astro_script.py --lat 51.5 --lon -0.1 --exact Y
+python3 fortuna.py --lat 51.5 --lon -0.1 --exact Y
 ```
 
 ## Output Format
@@ -74,3 +74,5 @@ The output displays the date/time, Sun/Moon signs, Fortuna position (degree in s
 - House System: Currently configured for Whole Sign Houses via the house_system = 'W' variable in the script. This can be changed to 'P' for Placidus, 'K' for Koch, etc., by editing the source file.
 - Fortuna Formula: Uses the standard day/night chart formula assumption.
 - Orb Logic: Calculates the shortest angular distance between 0-360 degrees.
+- There's not a lot of error checking. Don't do anything silly.
+- This is not very efficient. The pyswisseph library doesn't support vectors, so the only way to do this is with loops. If you set very high durations, this will take a long time!
