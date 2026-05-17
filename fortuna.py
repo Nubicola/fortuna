@@ -79,11 +79,13 @@ def is_reasonable(dt: datetime) -> bool:
     hour = dt.hour
     return 6 <= hour <= 23
 
-def print_fortuna_conjunctions(start_date, end_date, lat, lon, only_exact, only_reasonable, print_short, create_ics):
+def print_fortuna_conjunctions(start_date, end_date, lat, lon, only_exact, only_reasonable, print_short, create_ics, benefics):
     time_increment = timedelta(minutes=1)
     current_time = start_date
     threshold = 1.0 if only_exact == 'Y' else 6.0
     create_ics = create_ics == 'Y'
+    benefics = benefics == 'Y'
+    benefic_planets = {swe.VENUS, swe.JUPITER}
 
     orb_states = {
         body_id: {
@@ -206,6 +208,10 @@ def print_fortuna_conjunctions(start_date, end_date, lat, lon, only_exact, only_
             house = find_house(fortuna_longitude, cusps_list)
 
             for body_id, (name, longitude) in planet_positions.items():
+                # Skip non-benefic planets if benefics filter is enabled
+                if benefics and body_id not in benefic_planets:
+                    continue
+                
                 orb = abs(fortuna_longitude - longitude)
                 if orb > 180:
                     orb = 360 - orb  # Take the shortest angular distance
@@ -250,6 +256,7 @@ def main():
     parser.add_argument('--reasonable', type=str, default="Y", help="Y to restrict to 'reasonable' times only (from 06:00 until 23:59) Default: Y")
     parser.add_argument('--short', type=str, default="N", help="Y to reduce the output strings to short form. Default: N")
     parser.add_argument('--ics', type=str, default="N", help="Y to generate .ics files instead of printing conjunctions. Default: N")
+    parser.add_argument('--benefics', type=str, default="Y", help="Y to only show conjunctions with Venus or Jupiter (benefics). Default: Y")
 
     args = parser.parse_args()
 
@@ -263,6 +270,7 @@ def main():
     print(f"Only print reasonable times: {args.reasonable}")
     print(f"Print short form: {args.short}")
     print(f"Generate ICS files: {args.ics}")
+    print(f"Only benefic planets (Venus/Jupiter): {args.benefics}")
     print("---------------------------")
 
     try:
@@ -270,7 +278,7 @@ def main():
         start_datetime_obj = datetime.strptime(start_datetime_str, '%Y-%m-%d %H:%M')
         end_datetime_obj = start_datetime_obj + timedelta(days=args.duration)
         
-        print_fortuna_conjunctions(start_datetime_obj, end_datetime_obj, args.lat, args.lon, args.exact, args.reasonable, args.short, args.ics)
+        print_fortuna_conjunctions(start_datetime_obj, end_datetime_obj, args.lat, args.lon, args.exact, args.reasonable, args.short, args.ics, args.benefics)
         
     except ValueError as e:
         print(f"Error parsing date/time: {e}. Ensure correct YYYY-MM-DD and HH:MM format.")

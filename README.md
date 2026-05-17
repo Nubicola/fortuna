@@ -51,6 +51,7 @@ python3 fortuna.py --help
 | --exact | str | N | Y for only exact conjunctions (<1 degree), N for wide orb (<6 degrees). |
 | --ics | str | N | Y for emitting calendar files (.ics) that can be imported into outlook and the like |
 | --reasonable | str | N | Y for constraining the output to conjunctions between 06:00 and 23:59 |
+| --benefics | str | Y | emits output only for fortuna + Venus or Jupiter conjunctions. 'N' will emit all. |
 
 ## Examples
 Run with default parameters (1 day duration for current date at London, UK):
