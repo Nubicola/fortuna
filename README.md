@@ -6,6 +6,11 @@ It takes command-line arguments for location, start time, and duration, and supp
 
 While the Part of Fortune is usually calculated for a birth chart, this utility calculates the part of fortunate over a period of time and shows which planets are conjuct the part of fortune. So if you want to know "over the next 3 days, when is Venus conjuct the Part of Fortune?" this utility is for you.
 
+Author: Nubicola Rex (partially vibe-coded)
+Date: 2026-05-17
+License: GPL v3.0
+Repository: https://github.com/Nubicola/fortuna
+
 ## Prerequisites
 
 Python Installation: Ensure Python 3 is installed on your system (Linux recommended).
@@ -44,6 +49,8 @@ python3 fortuna.py --help
 | --start_time | str | 00:00 | Starting time in HH:MM format (UTC). |
 | --duration | int | 1 | Duration of the calculation loop in full days. Due to performance limitations, don't set this to a high number! |
 | --exact | str | N | Y for only exact conjunctions (<1 degree), N for wide orb (<6 degrees). |
+| --ics | str | N | Y for emitting calendar files (.ics) that can be imported into outlook and the like |
+| --reasonable | str | N | Y for constraining the output to conjunctions between 06:00 and 23:59 |
 
 ## Examples
 Run with default parameters (1 day duration for current date at London, UK):
